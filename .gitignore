@@ -8,3 +8,4 @@
 /log/
 *.pyc
 __pycache__/
+.idea
