@@ -1,0 +1,10 @@
+/.env
+/alembic.ini
+/alembic/
+/.venv/
+/cfg/development/
+/cfg/production/
+/cfg/testing/
+/log/
+*.pyc
+__pycache__/
