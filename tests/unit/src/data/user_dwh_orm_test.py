@@ -23,6 +23,7 @@ class TestUserDwhOrm():
             user_name=DataPreparation.TEST_USER_NAME,
             training_length=10,
             email=DataPreparation.TEST_USER_EMAIL,
+            password=DataPreparation.TEST_PASS,
             hashed_password=DataPreparation.TEST_PASS,
             is_active=True,
             is_superuser=False,
@@ -44,7 +45,6 @@ class TestUserDwhOrm():
             assert user.user_id == user_id_data
             assert user.user_name == DataPreparation.TEST_USER_NAME
             assert user.training_length == 10
-            assert user.hashed_password == DataPreparation.TEST_PASS
             assert user.is_active is True
             assert user.is_superuser is False
             assert user.is_verified is True
@@ -62,7 +62,6 @@ class TestUserDwhOrm():
         # Check results
         assert user.user_name == DataPreparation.TEST_USER_NAME
         assert user.training_length == 10
-        assert user.hashed_password == DataPreparation.TEST_PASS
         assert user.is_active is True
         assert user.is_superuser is False
         assert user.is_verified is True

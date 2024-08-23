@@ -114,6 +114,7 @@ def create_test_user():
             user_name=DataPreparation.TEST_USER_NAME,
             training_length=10,
             email=DataPreparation.TEST_USER_EMAIL,
+            password=DataPreparation.TEST_PASS,
             hashed_password=DataPreparation.TEST_PASS,
             is_active=True,
             is_superuser=False,

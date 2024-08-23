@@ -32,6 +32,7 @@ class UserDwhOrm:
                     action=user.action,
                     telegram_user_id=user.telegram_user_id,
                     email=user.email,
+                    password=user.password,
                     hashed_password=user.hashed_password,
                     is_active=user.is_active,
                     is_superuser=user.is_superuser,
