@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dwh-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dwh-service-app
+  template:
+    metadata:
+      labels:
+        app: dwh-service-app
+    spec:
+      containers:
+      - name: dwh-service-container
+        image: europe-central2-docker.pkg.dev/my-gcp-project/python-app-repo/python-app-image:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_DWH_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: DB_DWH_HOST
+        - DB_DWH_NAME: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              DB_DWH_NAME: DB_USER
+        - DB_DWH_PASS: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              DB_DWH_PASS: DB_PASSWORD
+        - DB_DWH_PORT: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              DB_DWH_PORT: DB_PASSWORD
+        - name: MQ_HOST
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secrets
+              key: MQ_HOST
+        - name: MQ_QUEUE_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secrets
+              key: MQ_QUEUE_USER
+        - name: MQ_QUEUE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secrets
+              key: MQ_QUEUE_PASS
+        
