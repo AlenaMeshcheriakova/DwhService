@@ -3,42 +3,41 @@ name: Deploy to GKE
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
-
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  CLUSTER_NAME: your-cluster-name
-  ZONE: us-central1-a  # Set your GKE cluster zone
+      - main  # Trigger the workflow on push to the main branch
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout the code from the repository
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
+    # Step 2: Authenticate to Google Cloud using the service account key
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
       with:
-        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        project_id: ${{ secrets.GCP_PROJECT }}
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Authenticate Docker with GCR
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+    # Step 3: Build Docker image
+    - name: Build Docker image
       run: |
-        gcloud auth configure-docker
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_NAME }}:latest .
 
-    - name: Build and Push Docker Image
+    # Step 4: Push Docker image to Google Container Registry (GCR)
+    - name: Push to Google Container Registry
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/your-image:latest .
-        docker push gcr.io/${{ secrets.GCP_PROJECT }}/your-image:latest
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_NAME }}:latest
 
-    - name: Get GKE credentials
-      run: |
-        gcloud container clusters get-credentials $CLUSTER_NAME --zone $ZONE --project $PROJECT_ID
-
+    # Step 5: Deploy to GKE
     - name: Deploy to GKE
       run: |
-        kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/service.yaml
-        kubectl apply -f k8s/secrets.yaml
+        gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --zone ${{ secrets.GKE_CLUSTER_ZONE }} --project ${{ secrets.GCP_PROJECT_ID }}
+        kubectl apply -f k8s-deployment.yml
