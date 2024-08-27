@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     MQ_HOST: str
     MQ_QUEUE_NAME: str
+    MQ_QUEUE_USER: str
+    MQ_QUEUE_PASS: str
 
     @property
     def get_MQ_HOST(self)-> str:
@@ -53,8 +55,7 @@ class Settings(BaseSettings):
         load_dotenv(env_file)
         return cls()
 
-    # model_config = SettingsConfigDict(env_file="cfg/development/.env")
-    model_config = SettingsConfigDict(env_file="../../../../cfg/testing/.test.env")
+    model_config = SettingsConfigDict(env_file="cfg/.env")
 
 load_dotenv()
 settings = Settings()

@@ -13,12 +13,19 @@ class ConsumerService:
     def __init__(self, queue_name: str):
         self.queue_name = queue_name
         self.host = settings.get_MQ_HOST
+        self.username = settings.MQ_QUEUE_USER
+        self.password = settings.MQ_QUEUE_PASS
         self.connection = None
         self.channel = None
 
     @log_decorator(my_logger=CustomLogger())
     def connect(self):
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(self.host))
+        credentials = pika.PlainCredentials(self.username, self.password)
+        connection_params = pika.ConnectionParameters(
+            host=self.host,
+            credentials=credentials
+        )
+        self.connection = pika.BlockingConnection(connection_params)
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=self.queue_name)
 
