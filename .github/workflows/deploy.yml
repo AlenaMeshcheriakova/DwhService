@@ -13,9 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: List files in the root directory
-      run: ls -al
-      
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -27,13 +24,17 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
 
+    - name: Configure Docker to use Google Cloud credentials
+      run: |
+        gcloud auth configure-docker europe-central2-docker.pkg.dev
+    
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_NAME }}:latest .
+        docker build -t europe-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/telegram-docker-repo/${{ secrets.IMAGE_NAME }}:latest .
 
     - name: Push to Google Container Registry
       run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_NAME }}:latest
+        docker pusheurope-central2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/telegram-docker-repo/${{ secrets.IMAGE_NAME }}:latest
 
     - name: Deploy to GKE
       run: |
