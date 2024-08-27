@@ -1,5 +1,8 @@
+import pika
+
 from cfg.сonfig import settings
 from src.service.consumer_service import ConsumerService
+
 
 def run():
     """Start MQ consumer"""
@@ -7,6 +10,8 @@ def run():
     consumer_service = ConsumerService(queue_name)
     consumer_service.connect()
     consumer_service.start_consuming()
+    print('Hello World!')
+
 
 if __name__ == '__main__':
     run()
