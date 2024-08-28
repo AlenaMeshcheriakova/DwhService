@@ -25,17 +25,17 @@ spec:
             secretKeyRef:
               name: db-secrets
               key: DB_DWH_HOST
-        - DB_DWH_NAME: DB_USER
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
               name: db-secrets
               DB_DWH_NAME: DB_USER
-        - DB_DWH_PASS: DB_PASSWORD
+        - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: db-secrets
               DB_DWH_PASS: DB_PASSWORD
-        - DB_DWH_PORT: DB_DWH_PORT
+        - name: DB_DWH_PORT
           valueFrom:
             secretKeyRef:
               name: db-secrets
