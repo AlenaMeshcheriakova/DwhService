@@ -55,7 +55,6 @@ class Settings(BaseSettings):
         load_dotenv(env_file)
         return cls()
 
-    model_config = SettingsConfigDict(env_file="cfg/.env")
-
-load_dotenv()
+    # model_config = SettingsConfigDict(env_file="cfg/.env")
+# load_dotenv()
 settings = Settings()

@@ -25,16 +25,21 @@ spec:
             secretKeyRef:
               name: db-secrets
               key: DB_DWH_HOST
-        - name: DB_USER
+        - name: DB_DWH_USER
           valueFrom:
             secretKeyRef:
               name: db-secrets
-              key: DB_USER
-        - name: DB_PASSWORD
+              key: DB_DWH_USER
+        - name: DB_DWH_PASS
           valueFrom:
             secretKeyRef:
               name: db-secrets
-              key: DB_PASSWORD
+              key: DB_DWH_PASS
+        - name: DB_DWH_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: DB_DWH_NAME
         - name: DB_DWH_PORT
           valueFrom:
             secretKeyRef:
@@ -45,6 +50,11 @@ spec:
             secretKeyRef:
               name: rabbitmq-secrets
               key: MQ_HOST
+        - name: MQ_QUEUE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secrets
+              key: MQ_QUEUE_NAME
         - name: MQ_QUEUE_USER
           valueFrom:
             secretKeyRef:
