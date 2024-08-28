@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dwh-service-deployment
+  labels:
+    app: dwh-service-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: dwh-service-app
@@ -14,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dwh-service-container
-        image: europe-central2-docker.pkg.dev/my-gcp-project/python-app-repo/python-app-image:latest
+        image: europe-central2-docker.pkg.dev/${GCP_PROJECT_ID}/telegram-docker-repo/${IMAGE_NAME}:latest
         ports:
         - containerPort: 8080
         env:
@@ -33,11 +35,11 @@ spec:
             secretKeyRef:
               name: db-secrets
               DB_DWH_PASS: DB_PASSWORD
-        - DB_DWH_PORT: DB_PASSWORD
+        - DB_DWH_PORT: DB_DWH_PORT
           valueFrom:
             secretKeyRef:
               name: db-secrets
-              DB_DWH_PORT: DB_PASSWORD
+              DB_DWH_PORT: DB_DWH_PORT
         - name: MQ_HOST
           valueFrom:
             secretKeyRef:
