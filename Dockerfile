@@ -60,6 +60,7 @@ WORKDIR $PYSETUP_PATH
 # copy in our built poetry + venv
 COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
+COPY . /app
 
 # quicker install as runtime deps are already installed
 RUN poetry install
