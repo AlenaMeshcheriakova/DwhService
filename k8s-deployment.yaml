@@ -20,6 +20,11 @@ spec:
         ports:
         - containerPort: 8080
         env:
+        - name: MODE
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: MODE
         - name: DB_DWH_HOST
           valueFrom:
             secretKeyRef:
