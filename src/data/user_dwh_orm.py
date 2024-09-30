@@ -5,14 +5,14 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from src.db.database import session_factory
 from src.dto.schema import UserAddDwhDTO, UserDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.model.user_dwh import UserDWH
 
 
 class UserDwhOrm:
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def create_dwh_user(new_user: UserAddDwhDTO):
         with session_factory() as session:
             stmt = insert(UserDWH).values(**new_user.dict())
@@ -20,7 +20,7 @@ class UserDwhOrm:
             session.commit()
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def get_user_by_id(user_id: uuid.UUID) -> Optional[UserDwhDTO]:
         try:
             with session_factory() as session:
@@ -48,7 +48,7 @@ class UserDwhOrm:
             return None
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def delete_user(user_id: uuid.UUID) -> bool:
         """
         Delete object by table id, not by User ID from original table

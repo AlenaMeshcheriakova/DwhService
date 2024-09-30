@@ -6,13 +6,13 @@ from typing import Any
 from src.data.word_dwh_orm import WordDwhOrm
 from src.dto.dwh_message import DwhMessage
 from src.dto.schema import WordAddDwhDTO, WordAddDTO, WordDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.service.abstract_message_handler import AbstractMessageHandler
 
 
 class WordMessageHandler(AbstractMessageHandler):
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def decide_handler(self, message):
         if message.get("object_type") == 'Word':
             return self
@@ -21,7 +21,7 @@ class WordMessageHandler(AbstractMessageHandler):
     def handle(self, dwh_message: DwhMessage):
         self.add_dwh_word(dwh_message)
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def add_dwh_word(self, dwh_message: DwhMessage):
         word_obj = dwh_message.object
         new_id = uuid.uuid4()

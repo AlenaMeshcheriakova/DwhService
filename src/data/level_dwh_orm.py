@@ -5,14 +5,14 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from src.db.database import session_factory
 from src.dto.schema import LevelAddDwhDTO, LevelDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.model.level_dwh import LevelDWH
 
 
 class LevelDwhOrm:
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def create_dwh_level(new_level: LevelAddDwhDTO):
         with session_factory() as session:
             stmt = insert(LevelDWH).values(**new_level.dict())
@@ -20,7 +20,7 @@ class LevelDwhOrm:
             session.commit()
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def get_level_by_id(level_id: uuid.UUID) -> Optional[LevelDwhDTO]:
         try:
             with session_factory() as session:
@@ -40,7 +40,7 @@ class LevelDwhOrm:
             return None
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def delete_level(level_id: uuid.UUID) -> bool:
         """
         Delete object by table id, not by Level ID from original table

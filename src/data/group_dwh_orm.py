@@ -5,14 +5,14 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from src.db.database import session_factory
 from src.dto.schema import GroupAddDwhDTO, GroupDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.model.group_dwh import GroupDWH
 
 
 class GroupDwhOrm:
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def create_dwh_group(new_group: GroupAddDwhDTO) -> None:
         with session_factory() as session:
             stmt = insert(GroupDWH).values(**new_group.dict())
@@ -20,7 +20,7 @@ class GroupDwhOrm:
             session.commit()
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def get_group_by_id(group_id: uuid.UUID) -> Optional[GroupDwhDTO]:
         try:
             with session_factory() as session:
@@ -41,7 +41,7 @@ class GroupDwhOrm:
             return None
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def delete_group(group_id: uuid.UUID) -> bool:
         """
         Delete object by table id, not by Group ID from original table

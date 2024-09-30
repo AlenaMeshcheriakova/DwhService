@@ -5,14 +5,14 @@ from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from src.db.database import session_factory
 from src.dto.schema import WordAddDwhDTO, WordDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.model.word_dwh import WordDWH
 
 
 class WordDwhOrm:
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def create_dwh_word(new_word: WordAddDwhDTO):
         with session_factory() as session:
             stmt = insert(WordDWH).values(**new_word.dict())
@@ -20,7 +20,7 @@ class WordDwhOrm:
             session.commit()
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def get_word_by_id(word_id: uuid.UUID) -> Optional[WordDwhDTO]:
         try:
             with session_factory() as session:
@@ -51,7 +51,7 @@ class WordDwhOrm:
             return None
 
     @staticmethod
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def delete_word(word_id: uuid.UUID) -> bool:
         """
         Delete object by table id, not by Word ID from original table

@@ -1,11 +1,12 @@
-import logging
+import sys
 import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
+import logging
 import pytest
 
 from src.db.base import Base
 from cfg.сonfig import settings
-
 from src.db.database import sync_engine, session_factory
 
 @pytest.fixture(scope='session', autouse=True)

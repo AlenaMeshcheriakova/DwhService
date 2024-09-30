@@ -3,13 +3,13 @@ import uuid
 from src.data.level_dwh_orm import LevelDwhOrm
 from src.dto.dwh_message import DwhMessage
 from src.dto.schema import LevelAddDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.service.abstract_message_handler import AbstractMessageHandler
 
 
 class LevelMessageHandler(AbstractMessageHandler):
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def decide_handler(self, message):
         if message.get("object_type") == 'Level':
             return self
@@ -18,7 +18,7 @@ class LevelMessageHandler(AbstractMessageHandler):
     def handle(self, dwh_message: DwhMessage):
         self.add_dwh_level(dwh_message)
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def add_dwh_level(self, dwh_message: DwhMessage):
         level_dto = dwh_message.object
         new_id = uuid.uuid4()

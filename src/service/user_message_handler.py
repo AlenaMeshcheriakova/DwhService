@@ -3,13 +3,13 @@ import uuid
 from src.data.user_dwh_orm import UserDwhOrm
 from src.dto.dwh_message import DwhMessage
 from src.dto.schema import UserAddDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.service.abstract_message_handler import AbstractMessageHandler
 
 
 class UserMessageHandler(AbstractMessageHandler):
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def decide_handler(self, message):
         if message.get("object_type") == 'User':
             return self
@@ -18,7 +18,7 @@ class UserMessageHandler(AbstractMessageHandler):
     def handle(self, dwh_message: DwhMessage):
         self.add_dwh_user(dwh_message)
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def add_dwh_user(self, dwh_message: DwhMessage):
         user_dto = dwh_message.object
         new_id = uuid.uuid4()

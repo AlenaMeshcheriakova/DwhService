@@ -3,13 +3,13 @@ import uuid
 from src.data.group_dwh_orm import GroupDwhOrm
 from src.dto.dwh_message import DwhMessage
 from src.dto.schema import GroupAddDwhDTO
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.service.abstract_message_handler import AbstractMessageHandler
 
 
 class GroupMessageHandler(AbstractMessageHandler):
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def decide_handler(self, message):
         if message.get("object_type") == 'Group':
             return self
@@ -18,7 +18,7 @@ class GroupMessageHandler(AbstractMessageHandler):
     def handle(self, dwh_message: DwhMessage):
         self.add_dwh_group(dwh_message)
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def add_dwh_group(self, dwh_message: DwhMessage):
         dwh_group_dto = dwh_message.object
         new_id = uuid.uuid4()

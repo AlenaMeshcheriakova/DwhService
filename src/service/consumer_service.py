@@ -2,7 +2,7 @@ import pika
 import json
 
 from cfg.сonfig import settings
-from src.log.logger import log_decorator, CustomLogger
+from src.log.logger import log_decorator, logger
 from src.service.message_dispatcher import MessageDispatcher
 
 class ConsumerService:
@@ -18,7 +18,7 @@ class ConsumerService:
         self.connection = None
         self.channel = None
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def connect(self):
         credentials = pika.PlainCredentials(self.username, self.password)
         connection_params = pika.ConnectionParameters(
@@ -29,14 +29,14 @@ class ConsumerService:
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=self.queue_name)
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def handle_message(self, ch, method, properties, body):
         message = json.loads(body)
         dispatcher = MessageDispatcher()
         dispatcher.handle(message)
         print(f"Received {message}")
 
-    @log_decorator(my_logger=CustomLogger())
+    @log_decorator(my_logger=logger)
     def start_consuming(self):
         if not self.connection or not self.channel:
             raise RuntimeError("Connection not established. Call connect() first.")
